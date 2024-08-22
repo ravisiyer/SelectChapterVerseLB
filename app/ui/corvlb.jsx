@@ -14,17 +14,12 @@ export default function COrVLB({
   label,
   selectedCORVNumberString,
   setSelectedCORVNumberString,
-  // goToChapterVerse
 }) {
-  function handleChange(value) {
-    setSelectedCORVNumberString(value);
-  }
   return (
     <div className="z-20">
       <Listbox
         value={selectedCORVNumberString}
-        onChange={handleChange}
-        // onChange={setSelectedCORVNumberString}
+        onChange={setSelectedCORVNumberString}
       >
         <ListboxButton className="border border-white flex justify-between items-center w-[120px] md:w-[72px] h-12 md:h-auto py-px px-0.5 ">
           {`${label} ${selectedCORVNumberString}`}

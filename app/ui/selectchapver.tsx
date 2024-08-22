@@ -67,8 +67,11 @@ function SelectChapterVerse({
           verseNumber,
           valChapterNumber.numericChapterNumber
         );
-        if (!valVerseNumber.valid) {
+        if (valVerseNumber.valid) {
+          goToChapterVerse();
+        } else {
           setVerseNumber("-");
+          goToChapterVerse(true); //ignoreVerse set to true
         }
       }
     }
@@ -85,7 +88,7 @@ function SelectChapterVerse({
 
   const { replace } = useRouter();
 
-  function goToChapterVerse() {
+  function goToChapterVerse(ignoreVerse = false) {
     const chapterErrorMessage =
       `For chapter (Ch.), please specify a number between ` +
       `${FIRST_CHAPTERNUMBER} and ${LAST_CHAPTERNUMBER}`;
@@ -97,7 +100,11 @@ function SelectChapterVerse({
     }
     const numericChapterNumber = valChapterNumber.numericChapterNumber;
 
-    if (verseNumber.trim() === "" || verseNumber.trim() === "-") {
+    if (
+      ignoreVerse ||
+      verseNumber.trim() === "" ||
+      verseNumber.trim() === "-"
+    ) {
       replace(`/chapter/${chapterNumber}`);
       closeMobileMenuIfOpen();
       return;
@@ -128,42 +135,6 @@ function SelectChapterVerse({
     // console.log("SCV handleSubmit handler invoked.");
     e.preventDefault();
     goToChapterVerse();
-    // const chapterErrorMessage =
-    //   `For chapter (Ch.), please specify a number between ` +
-    //   `${FIRST_CHAPTERNUMBER} and ${LAST_CHAPTERNUMBER}`;
-
-    // const valChapterNumber = getValNumericChapterNumber(chapterNumber);
-    // if (!valChapterNumber.valid) {
-    //   alert(chapterErrorMessage);
-    //   return;
-    // }
-    // const numericChapterNumber = valChapterNumber.numericChapterNumber;
-
-    // if (verseNumber.trim() === "" || verseNumber.trim() === "-") {
-    //   replace(`/chapter/${chapterNumber}`);
-    //   closeMobileMenuIfOpen();
-    //   return;
-    // }
-    // const verseErrorMessage =
-    //   `For verse (Ve.) in chapter (Ch.) ${numericChapterNumber}, please specify a number between ` +
-    //   `${MIN_VERSE_NUMBER_IN_ALL_CHAPTERS} and ` +
-    //   `${NUMBER_OF_VERSES_IN_CHAPTERS[numericChapterNumber - 1]}`;
-
-    // const valVerseNumber = getValNumericVerseNumber(
-    //   verseNumber,
-    //   numericChapterNumber
-    // );
-    // if (!valVerseNumber.valid) {
-    //   alert(verseErrorMessage);
-    //   return;
-    // }
-    // const numericVerseNumber = valVerseNumber.numericVerseNumber;
-    // const numericVerseId = calcNumericVerseId(
-    //   numericChapterNumber,
-    //   numericVerseNumber
-    // );
-    // replace(`/verse/${numericVerseId}`);
-    // closeMobileMenuIfOpen();
   }
 
   const idChapterNumber = `chapternumber${idSuffix}`;
@@ -176,7 +147,7 @@ function SelectChapterVerse({
         <SetupCOrVLB
           selectedCORVNumberString={chapterNumber}
           setSelectedCORVNumberString={setChapterNumber}
-          key={chapterNumber}
+          key={`Ch.${chapterNumber}`}
         />
         {/* Verse LB */}
         <SetupCOrVLB
@@ -189,14 +160,14 @@ function SelectChapterVerse({
           firstEntryBlank={true}
           selectedCORVNumberString={verseNumber}
           setSelectedCORVNumberString={setVerseNumber}
-          key={verseNumber}
+          key={`Ve.${verseNumber}`}
         />
-        <input
+        {/* <input
           type="submit"
           value="Go"
           className="px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 "
           onSubmit={(e) => console.log(e)}
-        />
+        /> */}
       </div>
     </form>
   );
