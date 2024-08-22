@@ -74,11 +74,18 @@ function SelectChapterVerse({
     }
   }, [chapterNumber]);
 
+  useEffect(() => {
+    if (verseNumber !== "" && verseNumber !== "-") {
+      const valChapterNumber = getValNumericChapterNumber(chapterNumber);
+      if (valChapterNumber.valid) {
+        goToChapterVerse();
+      }
+    }
+  }, [verseNumber]);
+
   const { replace } = useRouter();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    // console.log("SCV handleSubmit handler invoked.");
-    e.preventDefault();
+  function goToChapterVerse() {
     const chapterErrorMessage =
       `For chapter (Ch.), please specify a number between ` +
       `${FIRST_CHAPTERNUMBER} and ${LAST_CHAPTERNUMBER}`;
@@ -115,6 +122,48 @@ function SelectChapterVerse({
     );
     replace(`/verse/${numericVerseId}`);
     closeMobileMenuIfOpen();
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // console.log("SCV handleSubmit handler invoked.");
+    e.preventDefault();
+    goToChapterVerse();
+    // const chapterErrorMessage =
+    //   `For chapter (Ch.), please specify a number between ` +
+    //   `${FIRST_CHAPTERNUMBER} and ${LAST_CHAPTERNUMBER}`;
+
+    // const valChapterNumber = getValNumericChapterNumber(chapterNumber);
+    // if (!valChapterNumber.valid) {
+    //   alert(chapterErrorMessage);
+    //   return;
+    // }
+    // const numericChapterNumber = valChapterNumber.numericChapterNumber;
+
+    // if (verseNumber.trim() === "" || verseNumber.trim() === "-") {
+    //   replace(`/chapter/${chapterNumber}`);
+    //   closeMobileMenuIfOpen();
+    //   return;
+    // }
+    // const verseErrorMessage =
+    //   `For verse (Ve.) in chapter (Ch.) ${numericChapterNumber}, please specify a number between ` +
+    //   `${MIN_VERSE_NUMBER_IN_ALL_CHAPTERS} and ` +
+    //   `${NUMBER_OF_VERSES_IN_CHAPTERS[numericChapterNumber - 1]}`;
+
+    // const valVerseNumber = getValNumericVerseNumber(
+    //   verseNumber,
+    //   numericChapterNumber
+    // );
+    // if (!valVerseNumber.valid) {
+    //   alert(verseErrorMessage);
+    //   return;
+    // }
+    // const numericVerseNumber = valVerseNumber.numericVerseNumber;
+    // const numericVerseId = calcNumericVerseId(
+    //   numericChapterNumber,
+    //   numericVerseNumber
+    // );
+    // replace(`/verse/${numericVerseId}`);
+    // closeMobileMenuIfOpen();
   }
 
   const idChapterNumber = `chapternumber${idSuffix}`;
