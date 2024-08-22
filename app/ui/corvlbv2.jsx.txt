@@ -6,6 +6,7 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
+// import { useState } from "react";
 import clsx from "clsx";
 import { SCV_CHAPTER_LABEL, SCV_VERSE_LABEL } from "../constants/constants";
 
@@ -14,7 +15,12 @@ export default function COrVLB({
   label,
   selectedCORVNumberString,
   setSelectedCORVNumberString,
+  // name,
 }) {
+  // const [selected, setSelected] = useState(
+  //   chaptersOrVerses[selectedEntryIndex]
+  // );
+
   return (
     <div className="z-20">
       <Listbox

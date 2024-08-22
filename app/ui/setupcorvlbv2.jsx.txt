@@ -1,4 +1,8 @@
-import { LAST_CHAPTERNUMBER, SCV_CHAPTER_LABEL } from "../constants/constants";
+import {
+  FIRST_CHAPTERNUMBER,
+  LAST_CHAPTERNUMBER,
+  SCV_CHAPTER_LABEL,
+} from "../constants/constants";
 import COrVLB from "./corvlb";
 
 function SetupCOrVLB({
@@ -7,6 +11,7 @@ function SetupCOrVLB({
   firstEntryBlank = false, // true/false
   selectedCORVNumberString,
   setSelectedCORVNumberString,
+  // name = "", // name used for FormData
 }) {
   let chaptersOrVerses = [];
   let CORVIndex = 0;
@@ -24,12 +29,19 @@ function SetupCOrVLB({
     };
   }
 
+  // let selectedEntryIndex = 0;
+  // const tmp = parseInt(selectedCORVNumberString);
+  // if (tmp && tmp > 0 && tmp <= maxCORVNumber) {
+  //   selectedEntryIndex = firstEntryBlank ? tmp : tmp - 1;
+  // }
+
   return (
     <COrVLB
       chaptersOrVerses={chaptersOrVerses}
       label={label}
       selectedCORVNumberString={selectedCORVNumberString}
       setSelectedCORVNumberString={setSelectedCORVNumberString}
+      // name={name}
     />
   );
 }

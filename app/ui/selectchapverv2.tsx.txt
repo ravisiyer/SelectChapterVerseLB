@@ -13,7 +13,6 @@ import {
   MIN_VERSE_NUMBER_IN_ALL_CHAPTERS,
   MAX_VERSE_NUMBER_IN_ALL_CHAPTERS,
   NUMBER_OF_VERSES_IN_CHAPTERS,
-  SCV_VERSE_LABEL,
 } from "../constants/constants";
 import SetupCOrVLB from "./setupcorvlb";
 
@@ -32,7 +31,9 @@ function SelectChapterVerse({
   closeMobileMenuIfOpen: () => void;
 }) {
   const [chapterNumber, setChapterNumber] = useState("1");
+  // const [selectedChapterIndex, setSelectedChapterIndex] = useState(1);
   const [verseNumber, setVerseNumber] = useState("-");
+  // const [selectedVerseIndex, setSelectedVerseIndex] = useState(4);
 
   // console.log("SCV: initialChapterNumber: ", initialChapterNumber);
   // console.log("SCV: initialVerseNumber: ", initialVerseNumber);
@@ -58,21 +59,6 @@ function SelectChapterVerse({
     //   "SCV UseEffect: Set chapter and verse number state variables to passed & changed props"
     // );
   }, [initialChapterNumber, initialVerseNumber]);
-
-  useEffect(() => {
-    const valChapterNumber = getValNumericChapterNumber(chapterNumber);
-    if (valChapterNumber.valid) {
-      if (verseNumber !== "" && verseNumber !== "-") {
-        const valVerseNumber = getValNumericVerseNumber(
-          verseNumber,
-          valChapterNumber.numericChapterNumber
-        );
-        if (!valVerseNumber.valid) {
-          setVerseNumber("-");
-        }
-      }
-    }
-  }, [chapterNumber]);
 
   const { replace } = useRouter();
 
@@ -127,19 +113,19 @@ function SelectChapterVerse({
         <SetupCOrVLB
           selectedCORVNumberString={chapterNumber}
           setSelectedCORVNumberString={setChapterNumber}
+          // selectedEntryIndex={selectedChapterIndex}
+          // name="chapter"
           key={chapterNumber}
         />
         {/* Verse LB */}
         <SetupCOrVLB
-          label={SCV_VERSE_LABEL}
-          maxCORVNumber={
-            getValNumericChapterNumber(chapterNumber).valid
-              ? getMaxVersesInChapter(chapterNumber)
-              : MAX_VERSE_NUMBER_IN_ALL_CHAPTERS
-          }
+          label={"Ve."}
+          maxCORVNumber={MAX_VERSE_NUMBER_IN_ALL_CHAPTERS}
           firstEntryBlank={true}
           selectedCORVNumberString={verseNumber}
           setSelectedCORVNumberString={setVerseNumber}
+          // selectedEntryIndex={selectedVerseIndex}
+          // name={"verse"}
           key={verseNumber}
         />
         <input
