@@ -14,7 +14,7 @@ import {
   MAX_VERSE_NUMBER_IN_ALL_CHAPTERS,
   NUMBER_OF_VERSES_IN_CHAPTERS,
 } from "../constants/constants";
-import ChapterOrVerseListBox from "./chapterOrVerse";
+import SetupCOrVLB from "./setupcorvlb";
 
 // idSuffix is used to differentiate between SelectChapterVerse's input element ids if two parent
 // Navbar components are used on same page - e.g. at top of page and bottom of page.
@@ -30,10 +30,10 @@ function SelectChapterVerse({
   idSuffix: string;
   closeMobileMenuIfOpen: () => void;
 }) {
-  const [chapterNumber, setChapterNumber] = useState("");
-  const [selectedChapterIndex, setSelectedChapterIndex] = useState(1);
-  const [verseNumber, setVerseNumber] = useState("");
-  const [selectedVerseIndex, setSelectedVerseIndex] = useState(4);
+  const [chapterNumber, setChapterNumber] = useState("1");
+  // const [selectedChapterIndex, setSelectedChapterIndex] = useState(1);
+  const [verseNumber, setVerseNumber] = useState("-");
+  // const [selectedVerseIndex, setSelectedVerseIndex] = useState(4);
 
   // console.log("SCV: initialChapterNumber: ", initialChapterNumber);
   // console.log("SCV: initialVerseNumber: ", initialVerseNumber);
@@ -41,8 +41,20 @@ function SelectChapterVerse({
   // console.log("SCV: verseNumber: ", verseNumber);
 
   useEffect(() => {
-    setChapterNumber(initialChapterNumber);
-    setVerseNumber(initialVerseNumber);
+    const valChapterNumber = getValNumericChapterNumber(initialChapterNumber);
+    if (valChapterNumber.valid) {
+      setChapterNumber(initialChapterNumber);
+      const valVerseNumber = getValNumericVerseNumber(
+        initialVerseNumber,
+        valChapterNumber.numericChapterNumber
+      );
+      if (valVerseNumber.valid) {
+        setVerseNumber(initialVerseNumber);
+      } else {
+        setVerseNumber("-");
+      }
+    }
+
     // console.log(
     //   "SCV UseEffect: Set chapter and verse number state variables to passed & changed props"
     // );
@@ -64,7 +76,7 @@ function SelectChapterVerse({
     }
     const numericChapterNumber = valChapterNumber.numericChapterNumber;
 
-    if (verseNumber.trim() === "") {
+    if (verseNumber.trim() === "" || verseNumber.trim() === "-") {
       replace(`/chapter/${chapterNumber}`);
       closeMobileMenuIfOpen();
       return;
@@ -96,56 +108,25 @@ function SelectChapterVerse({
 
   return (
     <form className="inline" onSubmit={handleSubmit}>
-      {/* <label htmlFor={idChapterNumber} className="mr-1">
-        Ch.
-      </label>
-      <input
-        className="mr-1 text-black border border-neutral-500 w-16 md:w-11 py-px px-0.5"
-        type="number"
-        id={idChapterNumber}
-        size={2}
-        min={FIRST_CHAPTERNUMBER}
-        max={LAST_CHAPTERNUMBER}
-        required
-        value={chapterNumber}
-        onChange={(e) => {
-          setChapterNumber(e.target.value);
-        }}
-      />
-      <label htmlFor={idVerseNumber} className="mr-1">
-        Ve.
-      </label>
-      <input
-        className="mr-1 text-black border border-neutral-500 w-16 md:w-11 py-px px-0.5"
-        type="number"
-        id={idVerseNumber}
-        size={2}
-        min={MIN_VERSE_NUMBER_IN_ALL_CHAPTERS}
-        max={
-          getValNumericChapterNumber(chapterNumber).valid
-            ? getMaxVersesInChapter(chapterNumber)
-            : MAX_VERSE_NUMBER_IN_ALL_CHAPTERS
-        }
-        value={verseNumber}
-        onChange={(e) => {
-          setVerseNumber(e.target.value);
-        }}
-      /> */}
       <div className="flex gap-x-1 justify-center items-center">
         {/* Chapter LB (by default) */}
-        <ChapterOrVerseListBox
-          selectedEntryIndex={selectedChapterIndex}
-          name="chapter"
-          key={selectedChapterIndex}
+        <SetupCOrVLB
+          selectedCORVNumberString={chapterNumber}
+          setSelectedCORVNumberString={setChapterNumber}
+          // selectedEntryIndex={selectedChapterIndex}
+          // name="chapter"
+          key={chapterNumber}
         />
         {/* Verse LB */}
-        <ChapterOrVerseListBox
+        <SetupCOrVLB
           label={"Ve."}
-          maxCORVNumber={78}
+          maxCORVNumber={MAX_VERSE_NUMBER_IN_ALL_CHAPTERS}
           firstEntryBlank={true}
-          selectedEntryIndex={selectedVerseIndex}
-          name={"verse"}
-          key={selectedVerseIndex}
+          selectedCORVNumberString={verseNumber}
+          setSelectedCORVNumberString={setVerseNumber}
+          // selectedEntryIndex={selectedVerseIndex}
+          // name={"verse"}
+          key={verseNumber}
         />
         <input
           type="submit"
