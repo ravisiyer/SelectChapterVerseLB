@@ -17,6 +17,7 @@ import {
   SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
 } from "../constants/constants";
 import SetupCOrVLB from "./setupcorvlb";
+import clsx from "clsx";
 
 // idSuffix is used to differentiate between SelectChapterVerse's input element ids if two parent
 // Navbar components are used on same page - e.g. at top of page and bottom of page.
@@ -38,6 +39,9 @@ function SelectChapterVerse({
   const [verseNumber, setVerseNumber] = useState(
     SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
   );
+  //Below onlyUIVerseNumberReset state variable is a hack to handle specific condition; Later refactor to avoid hack
+  const [onlyUIVerseNumberReset, setOnlyUIVerseNumberReset] = useState(false);
+  const [disableGo, setDisableGo] = useState(true);
 
   // console.log("SCV: initialChapterNumber: ", initialChapterNumber);
   // console.log("SCV: initialVerseNumber: ", initialVerseNumber);
@@ -55,6 +59,47 @@ function SelectChapterVerse({
   useEffect(() => {
     const valChapterNumber = getValNumericChapterNumber(chapterNumber);
     if (valChapterNumber.valid) {
+      setDisableGo(false);
+      if (verseNumber !== SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR) {
+        const valVerseNumber = getValNumericVerseNumber(
+          verseNumber,
+          valChapterNumber.numericChapterNumber
+        );
+        if (!valVerseNumber.valid) {
+          setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
+          setOnlyUIVerseNumberReset(true);
+        }
+      }
+    }
+  }, [chapterNumber]);
+
+  useEffect(() => {
+    if (onlyUIVerseNumberReset) {
+      setOnlyUIVerseNumberReset(false);
+    } else {
+      checkAndGoToChapterVerse();
+    }
+    // const valChapterNumber = getValNumericChapterNumber(chapterNumber);
+    // if (valChapterNumber.valid) {
+    //   const valVerseNumber = getValNumericVerseNumber(
+    //     verseNumber,
+    //     valChapterNumber.numericChapterNumber
+    //   );
+    //   if (valVerseNumber.valid) {
+    //     goToChapterVerse();
+    //   } else {
+    //     setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
+    //     goToChapterVerse(true); //ignoreVerse set to true
+    //   }
+    // }
+    // }, [chapterNumber, verseNumber]);
+  }, [verseNumber]);
+
+  const { replace } = useRouter();
+
+  function checkAndGoToChapterVerse() {
+    const valChapterNumber = getValNumericChapterNumber(chapterNumber);
+    if (valChapterNumber.valid) {
       const valVerseNumber = getValNumericVerseNumber(
         verseNumber,
         valChapterNumber.numericChapterNumber
@@ -66,9 +111,7 @@ function SelectChapterVerse({
         goToChapterVerse(true); //ignoreVerse set to true
       }
     }
-  }, [chapterNumber, verseNumber]);
-
-  const { replace } = useRouter();
+  }
 
   function goToChapterVerse(ignoreVerse = false) {
     const chapterErrorMessage =
@@ -87,6 +130,7 @@ function SelectChapterVerse({
       verseNumber.trim() === SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
     ) {
       replace(`/chapter/${chapterNumber}`);
+      setDisableGo(true);
       closeMobileMenuIfOpen();
       return;
     }
@@ -109,13 +153,15 @@ function SelectChapterVerse({
       numericVerseNumber
     );
     replace(`/verse/${numericVerseId}`);
+    setDisableGo(true);
     closeMobileMenuIfOpen();
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     // console.log("SCV handleSubmit handler invoked.");
     e.preventDefault();
-    goToChapterVerse();
+    checkAndGoToChapterVerse();
+    // goToChapterVerse();
   }
 
   const idChapterNumber = `chapternumber${idSuffix}`;
@@ -151,12 +197,21 @@ function SelectChapterVerse({
           }
           key={`Ve.${verseNumber}`}
         />
-        {/* <input
+        <input
           type="submit"
           value="Go"
-          className="px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 "
+          disabled={disableGo ? true : false}
+          // disabled={
+          //   chapterNumber === SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
+          //     ? true
+          //     : false
+          // }
+          className={clsx(
+            "px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 disabled:bg-gray-500 disabled:pointer-events-none"
+          )}
+          // className="px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 "
           onSubmit={(e) => console.log(e)}
-        /> */}
+        />
       </div>
     </form>
   );

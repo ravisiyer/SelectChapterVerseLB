@@ -16,6 +16,16 @@ export default function COrVLB({
   setSelectedCORVNumberString,
   firstEntryDisabled = false,
   listboxDisabled = false,
+}: {
+  chaptersOrVerses: {
+    id: number;
+    CORVNumberString: string;
+  }[];
+  label: string;
+  selectedCORVNumberString: string;
+  setSelectedCORVNumberString: (selectedCORVNumberString: string) => void;
+  firstEntryDisabled?: boolean;
+  listboxDisabled?: boolean;
 }) {
   return (
     <div className="z-20">
@@ -29,8 +39,12 @@ export default function COrVLB({
           <ChevronDownIcon className="size-4 " />
         </ListboxButton>
         <ListboxOptions
-          anchor="bottom"
-          className="border border-black bg-yellow-100 z-20"
+          // anchor="bottom"
+          anchor={{
+            to: "bottom",
+            offset: label === SCV_VERSE_LABEL ? -40 : 0,
+          }}
+          className="border border-black bg-yellow-200 z-20"
         >
           <div
             className={clsx(
@@ -44,7 +58,8 @@ export default function COrVLB({
                 key={cOrV.id}
                 value={cOrV.CORVNumberString}
                 disabled={firstEntryDisabled && index === 0}
-                className="group flex cursor-default items-center p-1 select-none data-[focus]:bg-orange-400 data-[disabled]:opacity-40 data-[checked]:data-[disabled]:bg-gray-500"
+                className="group flex cursor-default items-center p-1 select-none data-[focus]:bg-orange-400 data-[disabled]:opacity-40 data-[disabled]:bg-gray-500"
+                // className="group flex cursor-default items-center p-1 select-none data-[focus]:bg-orange-400 data-[disabled]:opacity-40 data-[checked]:data-[disabled]:bg-gray-500"
               >
                 <CheckIcon className="invisible size-4 group-data-[selected]:visible" />
                 {cOrV.CORVNumberString}

@@ -13,6 +13,14 @@ function SetupCOrVLB({
   setSelectedCORVNumberString,
   firstEntryDisabled = false,
   listboxDisabled = false,
+}: {
+  label?: string;
+  maxCORVNumber?: number;
+  firstEntryBlank?: boolean;
+  selectedCORVNumberString: string;
+  setSelectedCORVNumberString: (selectedCORVNumberString: string) => void;
+  firstEntryDisabled?: boolean;
+  listboxDisabled?: boolean;
 }) {
   let chaptersOrVerses = [];
   let CORVIndex = 0;
