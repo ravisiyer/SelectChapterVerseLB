@@ -7,6 +7,7 @@ import {
   FIRST_VERSEID,
   LAST_VERSEID,
   MAIN_CONTAINER_MAX_WIDTH_TAILWIND,
+  SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
 } from "@/app/constants/constants";
 import SelectChapterVerse from "./selectchapver";
 import { usePathname } from "next/navigation";
@@ -67,8 +68,12 @@ function Navbar({ idSuffix = "" }) {
   const [prevHref, setPrevHref] = useState("");
   const [upHref, setUpHref] = useState("");
 
-  const [chapterNumber, setChapterNumber] = useState("-");
-  const [verseNumber, setVerseNumber] = useState("-");
+  const [chapterNumber, setChapterNumber] = useState(
+    SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
+  );
+  const [verseNumber, setVerseNumber] = useState(
+    SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
+  );
   // const [chapterNumber, setChapterNumber] = useState("");
   // const [verseNumber, setVerseNumber] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -89,7 +94,8 @@ function Navbar({ idSuffix = "" }) {
         const numericChapterNumber = valChapterNumber.numericChapterNumber;
         if (numericChapterNumber > 0) {
           setChapterNumber(pathChapterNumber);
-          setVerseNumber("");
+          setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
+          // setVerseNumber("");
           setUpHref("/");
           if (numericChapterNumber > FIRST_CHAPTERNUMBER) {
             setPrevHref(`/chapter/${numericChapterNumber - 1}`);
@@ -127,8 +133,8 @@ function Navbar({ idSuffix = "" }) {
         }
       }
     } else {
-      setChapterNumber("-");
-      setVerseNumber("-");
+      setChapterNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
+      setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
       // setChapterNumber("");
       // setVerseNumber("");
       setUpHref("");

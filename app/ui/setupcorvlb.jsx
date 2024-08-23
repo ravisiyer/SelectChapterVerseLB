@@ -1,4 +1,8 @@
-import { LAST_CHAPTERNUMBER, SCV_CHAPTER_LABEL } from "../constants/constants";
+import {
+  LAST_CHAPTERNUMBER,
+  SCV_CHAPTER_LABEL,
+  SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
+} from "../constants/constants";
 import COrVLB from "./corvlb";
 
 function SetupCOrVLB({
@@ -14,7 +18,10 @@ function SetupCOrVLB({
   let CORVIndex = 0;
 
   if (firstEntryBlank) {
-    chaptersOrVerses[0] = { id: 0, CORVNumberString: "-" };
+    chaptersOrVerses[0] = {
+      id: 0,
+      CORVNumberString: SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
+    };
     CORVIndex = 1;
   }
   const maxCORVIndex = firstEntryBlank ? maxCORVNumber : maxCORVNumber - 1;

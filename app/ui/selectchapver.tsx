@@ -14,6 +14,7 @@ import {
   MAX_VERSE_NUMBER_IN_ALL_CHAPTERS,
   NUMBER_OF_VERSES_IN_CHAPTERS,
   SCV_VERSE_LABEL,
+  SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
 } from "../constants/constants";
 import SetupCOrVLB from "./setupcorvlb";
 
@@ -21,8 +22,8 @@ import SetupCOrVLB from "./setupcorvlb";
 // Navbar components are used on same page - e.g. at top of page and bottom of page.
 // Note that HTML spec. states that each element id must be unique
 function SelectChapterVerse({
-  initialChapterNumber = "",
-  initialVerseNumber = "",
+  initialChapterNumber = SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
+  initialVerseNumber = SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR,
   idSuffix = "",
   closeMobileMenuIfOpen,
 }: {
@@ -31,9 +32,13 @@ function SelectChapterVerse({
   idSuffix: string;
   closeMobileMenuIfOpen: () => void;
 }) {
-  const [chapterNumber, setChapterNumber] = useState("-");
+  const [chapterNumber, setChapterNumber] = useState(
+    SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
+  );
   // const [chapterNumber, setChapterNumber] = useState("1");
-  const [verseNumber, setVerseNumber] = useState("-");
+  const [verseNumber, setVerseNumber] = useState(
+    SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
+  );
 
   // console.log("SCV: initialChapterNumber: ", initialChapterNumber);
   // console.log("SCV: initialVerseNumber: ", initialVerseNumber);
@@ -41,26 +46,29 @@ function SelectChapterVerse({
   // console.log("SCV: verseNumber: ", verseNumber);
 
   useEffect(() => {
-    const valChapterNumber = getValNumericChapterNumber(initialChapterNumber);
-    if (valChapterNumber.valid) {
-      setChapterNumber(initialChapterNumber);
-      const valVerseNumber = getValNumericVerseNumber(
-        initialVerseNumber,
-        valChapterNumber.numericChapterNumber
-      );
-      if (valVerseNumber.valid) {
-        setVerseNumber(initialVerseNumber);
-      } else {
-        setVerseNumber("-");
-      }
-    } else {
-      setChapterNumber("-");
-      setVerseNumber("-");
-    }
+    setChapterNumber(initialChapterNumber);
+    setVerseNumber(initialVerseNumber);
 
-    console.log(
-      `SCV UseEffect: Set chapter and verse number state variables to passed & changed props: initialChapterNumber: ${initialChapterNumber}, initialVerseNumber :${initialVerseNumber}`
-    );
+    // const valChapterNumber = getValNumericChapterNumber(initialChapterNumber);
+    // if (valChapterNumber.valid) {
+    //   setChapterNumber(initialChapterNumber);
+    //   const valVerseNumber = getValNumericVerseNumber(
+    //     initialVerseNumber,
+    //     valChapterNumber.numericChapterNumber
+    //   );
+    //   if (valVerseNumber.valid) {
+    //     setVerseNumber(initialVerseNumber);
+    //   } else {
+    //     setVerseNumber("-");
+    //   }
+    // } else {
+    //   setChapterNumber("-");
+    //   setVerseNumber("-");
+    // }
+
+    // console.log(
+    //   `SCV UseEffect: Set chapter and verse number state variables to passed & changed props: initialChapterNumber: ${initialChapterNumber}, initialVerseNumber :${initialVerseNumber}`
+    // );
   }, [initialChapterNumber, initialVerseNumber]);
 
   useEffect(() => {
@@ -73,7 +81,7 @@ function SelectChapterVerse({
       if (valVerseNumber.valid) {
         goToChapterVerse();
       } else {
-        setVerseNumber("-");
+        setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
         goToChapterVerse(true); //ignoreVerse set to true
       }
     }
@@ -106,8 +114,8 @@ function SelectChapterVerse({
 
     if (
       ignoreVerse ||
-      verseNumber.trim() === "" ||
-      verseNumber.trim() === "-"
+      // verseNumber.trim() === "" ||
+      verseNumber.trim() === SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
     ) {
       replace(`/chapter/${chapterNumber}`);
       closeMobileMenuIfOpen();
@@ -168,7 +176,11 @@ function SelectChapterVerse({
           selectedCORVNumberString={verseNumber}
           setSelectedCORVNumberString={setVerseNumber}
           firstEntryDisabled={false}
-          listboxDisabled={chapterNumber === "-" ? true : false}
+          listboxDisabled={
+            chapterNumber === SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
+              ? true
+              : false
+          }
           key={`Ve.${verseNumber}`}
         />
         {/* <input
