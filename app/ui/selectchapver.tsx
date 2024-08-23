@@ -35,7 +35,6 @@ function SelectChapterVerse({
   const [chapterNumber, setChapterNumber] = useState(
     SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
   );
-  // const [chapterNumber, setChapterNumber] = useState("1");
   const [verseNumber, setVerseNumber] = useState(
     SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
   );
@@ -48,24 +47,6 @@ function SelectChapterVerse({
   useEffect(() => {
     setChapterNumber(initialChapterNumber);
     setVerseNumber(initialVerseNumber);
-
-    // const valChapterNumber = getValNumericChapterNumber(initialChapterNumber);
-    // if (valChapterNumber.valid) {
-    //   setChapterNumber(initialChapterNumber);
-    //   const valVerseNumber = getValNumericVerseNumber(
-    //     initialVerseNumber,
-    //     valChapterNumber.numericChapterNumber
-    //   );
-    //   if (valVerseNumber.valid) {
-    //     setVerseNumber(initialVerseNumber);
-    //   } else {
-    //     setVerseNumber("-");
-    //   }
-    // } else {
-    //   setChapterNumber("-");
-    //   setVerseNumber("-");
-    // }
-
     // console.log(
     //   `SCV UseEffect: Set chapter and verse number state variables to passed & changed props: initialChapterNumber: ${initialChapterNumber}, initialVerseNumber :${initialVerseNumber}`
     // );
@@ -87,17 +68,6 @@ function SelectChapterVerse({
     }
   }, [chapterNumber, verseNumber]);
 
-  // useEffect(() => {
-
-  //   goToChapterVerse();
-  //   // if (verseNumber !== "" && verseNumber !== "-") {
-  //   //   const valChapterNumber = getValNumericChapterNumber(chapterNumber);
-  //   //   if (valChapterNumber.valid) {
-  //   //     goToChapterVerse();
-  //   //   }
-  //   // }
-  // }, [verseNumber]);
-
   const { replace } = useRouter();
 
   function goToChapterVerse(ignoreVerse = false) {
@@ -114,7 +84,6 @@ function SelectChapterVerse({
 
     if (
       ignoreVerse ||
-      // verseNumber.trim() === "" ||
       verseNumber.trim() === SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
     ) {
       replace(`/chapter/${chapterNumber}`);
@@ -160,7 +129,6 @@ function SelectChapterVerse({
           firstEntryBlank={true}
           selectedCORVNumberString={chapterNumber}
           setSelectedCORVNumberString={setChapterNumber}
-          // firstEntryDisabled={false}
           firstEntryDisabled={true}
           key={`Ch.${chapterNumber}`}
         />

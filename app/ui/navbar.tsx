@@ -74,8 +74,6 @@ function Navbar({ idSuffix = "" }) {
   const [verseNumber, setVerseNumber] = useState(
     SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
   );
-  // const [chapterNumber, setChapterNumber] = useState("");
-  // const [verseNumber, setVerseNumber] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   function closeMobileMenuIfOpen(): void {
     isMobileMenuOpen ? setIsMobileMenuOpen(false) : null;
@@ -95,7 +93,6 @@ function Navbar({ idSuffix = "" }) {
         if (numericChapterNumber > 0) {
           setChapterNumber(pathChapterNumber);
           setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
-          // setVerseNumber("");
           setUpHref("/");
           if (numericChapterNumber > FIRST_CHAPTERNUMBER) {
             setPrevHref(`/chapter/${numericChapterNumber - 1}`);
@@ -135,8 +132,6 @@ function Navbar({ idSuffix = "" }) {
     } else {
       setChapterNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
       setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
-      // setChapterNumber("");
-      // setVerseNumber("");
       setUpHref("");
       setPrevHref("");
       setNextHref("");
