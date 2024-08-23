@@ -31,7 +31,8 @@ function SelectChapterVerse({
   idSuffix: string;
   closeMobileMenuIfOpen: () => void;
 }) {
-  const [chapterNumber, setChapterNumber] = useState("1");
+  const [chapterNumber, setChapterNumber] = useState("-");
+  // const [chapterNumber, setChapterNumber] = useState("1");
   const [verseNumber, setVerseNumber] = useState("-");
 
   // console.log("SCV: initialChapterNumber: ", initialChapterNumber);
@@ -52,39 +53,42 @@ function SelectChapterVerse({
       } else {
         setVerseNumber("-");
       }
+    } else {
+      setChapterNumber("-");
+      setVerseNumber("-");
     }
 
-    // console.log(
-    //   "SCV UseEffect: Set chapter and verse number state variables to passed & changed props"
-    // );
+    console.log(
+      `SCV UseEffect: Set chapter and verse number state variables to passed & changed props: initialChapterNumber: ${initialChapterNumber}, initialVerseNumber :${initialVerseNumber}`
+    );
   }, [initialChapterNumber, initialVerseNumber]);
 
   useEffect(() => {
     const valChapterNumber = getValNumericChapterNumber(chapterNumber);
     if (valChapterNumber.valid) {
-      if (verseNumber !== "" && verseNumber !== "-") {
-        const valVerseNumber = getValNumericVerseNumber(
-          verseNumber,
-          valChapterNumber.numericChapterNumber
-        );
-        if (valVerseNumber.valid) {
-          goToChapterVerse();
-        } else {
-          setVerseNumber("-");
-          goToChapterVerse(true); //ignoreVerse set to true
-        }
-      }
-    }
-  }, [chapterNumber]);
-
-  useEffect(() => {
-    if (verseNumber !== "" && verseNumber !== "-") {
-      const valChapterNumber = getValNumericChapterNumber(chapterNumber);
-      if (valChapterNumber.valid) {
+      const valVerseNumber = getValNumericVerseNumber(
+        verseNumber,
+        valChapterNumber.numericChapterNumber
+      );
+      if (valVerseNumber.valid) {
         goToChapterVerse();
+      } else {
+        setVerseNumber("-");
+        goToChapterVerse(true); //ignoreVerse set to true
       }
     }
-  }, [verseNumber]);
+  }, [chapterNumber, verseNumber]);
+
+  // useEffect(() => {
+
+  //   goToChapterVerse();
+  //   // if (verseNumber !== "" && verseNumber !== "-") {
+  //   //   const valChapterNumber = getValNumericChapterNumber(chapterNumber);
+  //   //   if (valChapterNumber.valid) {
+  //   //     goToChapterVerse();
+  //   //   }
+  //   // }
+  // }, [verseNumber]);
 
   const { replace } = useRouter();
 
@@ -145,8 +149,11 @@ function SelectChapterVerse({
       <div className="flex gap-x-1 justify-center items-center">
         {/* Chapter LB (by default) */}
         <SetupCOrVLB
+          firstEntryBlank={true}
           selectedCORVNumberString={chapterNumber}
           setSelectedCORVNumberString={setChapterNumber}
+          // firstEntryDisabled={false}
+          firstEntryDisabled={true}
           key={`Ch.${chapterNumber}`}
         />
         {/* Verse LB */}
@@ -160,6 +167,8 @@ function SelectChapterVerse({
           firstEntryBlank={true}
           selectedCORVNumberString={verseNumber}
           setSelectedCORVNumberString={setVerseNumber}
+          firstEntryDisabled={false}
+          listboxDisabled={chapterNumber === "-" ? true : false}
           key={`Ve.${verseNumber}`}
         />
         {/* <input

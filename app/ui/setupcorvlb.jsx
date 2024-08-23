@@ -7,6 +7,8 @@ function SetupCOrVLB({
   firstEntryBlank = false, // true/false
   selectedCORVNumberString,
   setSelectedCORVNumberString,
+  firstEntryDisabled = false,
+  listboxDisabled = false,
 }) {
   let chaptersOrVerses = [];
   let CORVIndex = 0;
@@ -30,6 +32,8 @@ function SetupCOrVLB({
       label={label}
       selectedCORVNumberString={selectedCORVNumberString}
       setSelectedCORVNumberString={setSelectedCORVNumberString}
+      firstEntryDisabled={firstEntryDisabled}
+      listboxDisabled={listboxDisabled}
     />
   );
 }

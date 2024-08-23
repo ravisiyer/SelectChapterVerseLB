@@ -67,8 +67,10 @@ function Navbar({ idSuffix = "" }) {
   const [prevHref, setPrevHref] = useState("");
   const [upHref, setUpHref] = useState("");
 
-  const [chapterNumber, setChapterNumber] = useState("");
-  const [verseNumber, setVerseNumber] = useState("");
+  const [chapterNumber, setChapterNumber] = useState("-");
+  const [verseNumber, setVerseNumber] = useState("-");
+  // const [chapterNumber, setChapterNumber] = useState("");
+  // const [verseNumber, setVerseNumber] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   function closeMobileMenuIfOpen(): void {
     isMobileMenuOpen ? setIsMobileMenuOpen(false) : null;
@@ -125,8 +127,10 @@ function Navbar({ idSuffix = "" }) {
         }
       }
     } else {
-      setChapterNumber("");
-      setVerseNumber("");
+      setChapterNumber("-");
+      setVerseNumber("-");
+      // setChapterNumber("");
+      // setVerseNumber("");
       setUpHref("");
       setPrevHref("");
       setNextHref("");
