@@ -79,20 +79,6 @@ function SelectChapterVerse({
     } else {
       checkAndGoToChapterVerse();
     }
-    // const valChapterNumber = getValNumericChapterNumber(chapterNumber);
-    // if (valChapterNumber.valid) {
-    //   const valVerseNumber = getValNumericVerseNumber(
-    //     verseNumber,
-    //     valChapterNumber.numericChapterNumber
-    //   );
-    //   if (valVerseNumber.valid) {
-    //     goToChapterVerse();
-    //   } else {
-    //     setVerseNumber(SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR);
-    //     goToChapterVerse(true); //ignoreVerse set to true
-    //   }
-    // }
-    // }, [chapterNumber, verseNumber]);
   }, [verseNumber]);
 
   const { replace } = useRouter();
@@ -161,7 +147,6 @@ function SelectChapterVerse({
     // console.log("SCV handleSubmit handler invoked.");
     e.preventDefault();
     checkAndGoToChapterVerse();
-    // goToChapterVerse();
   }
 
   const idChapterNumber = `chapternumber${idSuffix}`;
@@ -201,15 +186,9 @@ function SelectChapterVerse({
           type="submit"
           value="Go"
           disabled={disableGo ? true : false}
-          // disabled={
-          //   chapterNumber === SCV_CHAPTER_OR_VERSE_NOT_SPECIFIED_STR
-          //     ? true
-          //     : false
-          // }
           className={clsx(
             "px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 disabled:bg-gray-500 disabled:pointer-events-none"
           )}
-          // className="px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 "
           onSubmit={(e) => console.log(e)}
         />
       </div>

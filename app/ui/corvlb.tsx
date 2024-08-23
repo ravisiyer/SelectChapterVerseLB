@@ -39,7 +39,6 @@ export default function COrVLB({
           <ChevronDownIcon className="size-4 " />
         </ListboxButton>
         <ListboxOptions
-          // anchor="bottom"
           anchor={{
             to: "bottom",
             offset: label === SCV_VERSE_LABEL ? -40 : 0,
@@ -50,7 +49,7 @@ export default function COrVLB({
             className={clsx(
               "grid ",
               label === SCV_CHAPTER_LABEL && "grid-cols-3",
-              label === SCV_VERSE_LABEL && "grid-cols-8"
+              label === SCV_VERSE_LABEL && "grid-cols-6"
             )}
           >
             {chaptersOrVerses.map((cOrV, index) => (
@@ -59,7 +58,6 @@ export default function COrVLB({
                 value={cOrV.CORVNumberString}
                 disabled={firstEntryDisabled && index === 0}
                 className="group flex cursor-default items-center p-1 select-none data-[focus]:bg-orange-400 data-[disabled]:opacity-40 data-[disabled]:bg-gray-500"
-                // className="group flex cursor-default items-center p-1 select-none data-[focus]:bg-orange-400 data-[disabled]:opacity-40 data-[checked]:data-[disabled]:bg-gray-500"
               >
                 <CheckIcon className="invisible size-4 group-data-[selected]:visible" />
                 {cOrV.CORVNumberString}
