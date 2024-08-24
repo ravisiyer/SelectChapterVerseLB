@@ -51,9 +51,6 @@ function SelectChapterVerse({
   // console.log("SCV: verseNumber: ", verseNumber);
 
   const pathname = usePathname();
-  // useEffect(() => {
-  //   setDisableGo(true);
-  // }, [pathname]);
 
   useEffect(() => {
     setChapterNumber(initialChapterNumber);
@@ -69,9 +66,9 @@ function SelectChapterVerse({
       const pathChapterNumber = pathSegments[2];
       if (chapterNumber === pathChapterNumber) {
         //We are already on the required chapter page
-        console.log(
-          "In SCV chapterNumber useEffect: We are already on the required chapter page. Disable Go and return"
-        );
+        // console.log(
+        //   "In SCV chapterNumber useEffect: We are already on the required chapter page. Disable Go and return"
+        // );
         setDisableGo(true);
         return;
       }
@@ -87,9 +84,9 @@ function SelectChapterVerse({
             verseNumber === chapVerseNumbers.verseNumber
           ) {
             //We are already on the required chapter and verse page
-            console.log(
-              "In SCV chapterNumber useEffect: We are already on the required chapter and verse page. Disable Go and return"
-            );
+            // console.log(
+            //   "In SCV chapterNumber useEffect: We are already on the required chapter and verse page. Disable Go and return"
+            // );
             setDisableGo(true);
             return;
           }
@@ -228,7 +225,6 @@ function SelectChapterVerse({
           className={clsx(
             "px-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 disabled:bg-gray-500 disabled:pointer-events-none"
           )}
-          // onSubmit={(e) => console.log(e)}
         />
       </div>
     </form>
