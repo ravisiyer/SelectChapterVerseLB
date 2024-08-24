@@ -1,11 +1,13 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
   getValNumericChapterNumber,
   getValNumericVerseNumber,
   calcNumericVerseId,
   getMaxVersesInChapter,
+  getValNumericVerseId,
+  getCVNumbersFromVerseId,
 } from "../lib/util";
 import {
   FIRST_CHAPTERNUMBER,
@@ -48,6 +50,11 @@ function SelectChapterVerse({
   // console.log("SCV: chapterNumber: ", chapterNumber);
   // console.log("SCV: verseNumber: ", verseNumber);
 
+  const pathname = usePathname();
+  // useEffect(() => {
+  //   setDisableGo(true);
+  // }, [pathname]);
+
   useEffect(() => {
     setChapterNumber(initialChapterNumber);
     setVerseNumber(initialVerseNumber);
@@ -57,6 +64,38 @@ function SelectChapterVerse({
   }, [initialChapterNumber, initialVerseNumber]);
 
   useEffect(() => {
+    const pathSegments = pathname.split("/");
+    if (pathSegments.length === 3 && pathSegments[1] === "chapter") {
+      const pathChapterNumber = pathSegments[2];
+      if (chapterNumber === pathChapterNumber) {
+        //We are already on the required chapter page
+        console.log(
+          "In SCV chapterNumber useEffect: We are already on the required chapter page. Disable Go and return"
+        );
+        setDisableGo(true);
+        return;
+      }
+    } else if (pathSegments.length === 3 && pathSegments[1] === "verse") {
+      const pathVerseId = pathSegments[2];
+      const valVerseId = getValNumericVerseId(pathVerseId);
+      if (valVerseId.valid) {
+        const numericVerseId = valVerseId.numericVerseId;
+        if (numericVerseId > 0) {
+          const chapVerseNumbers = getCVNumbersFromVerseId(pathVerseId);
+          if (
+            chapterNumber === chapVerseNumbers.chapterNumber &&
+            verseNumber === chapVerseNumbers.verseNumber
+          ) {
+            //We are already on the required chapter and verse page
+            console.log(
+              "In SCV chapterNumber useEffect: We are already on the required chapter and verse page. Disable Go and return"
+            );
+            setDisableGo(true);
+            return;
+          }
+        }
+      }
+    }
     const valChapterNumber = getValNumericChapterNumber(chapterNumber);
     if (valChapterNumber.valid) {
       setDisableGo(false);
@@ -187,9 +226,9 @@ function SelectChapterVerse({
           value="Go"
           disabled={disableGo ? true : false}
           className={clsx(
-            "px-1 ml-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 disabled:bg-gray-500 disabled:pointer-events-none"
+            "px-1 leading-normal  text-black md:text-lg  bg-orange-400 rounded-md cursor-pointer hover:text-black hover:bg-violet-50 active:scale-90 disabled:bg-gray-500 disabled:pointer-events-none"
           )}
-          onSubmit={(e) => console.log(e)}
+          // onSubmit={(e) => console.log(e)}
         />
       </div>
     </form>

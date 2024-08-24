@@ -34,7 +34,7 @@ export default function COrVLB({
         onChange={setSelectedCORVNumberString}
         disabled={listboxDisabled}
       >
-        <ListboxButton className="border border-white flex justify-between items-center w-[120px] md:w-[72px] h-12 md:h-auto py-px px-0.5 data-[disabled]:opacity-40">
+        <ListboxButton className="border border-white flex justify-between items-center w-[120px] md:w-[72px] h-12 md:h-auto py-px px-0.5 select-none data-[disabled]:opacity-40">
           {`${label} ${selectedCORVNumberString}`}
           <ChevronDownIcon className="size-4 " />
         </ListboxButton>
